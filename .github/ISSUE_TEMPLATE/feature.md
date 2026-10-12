@@ -19,5 +19,5 @@ What this issue deliberately does not cover.
 Links, designs, dependencies, known constraints.
 * WCAG 2.2 Standards - https://www.w3.org/TR/WCAG22/
 * NVDA Screen Reader - https://github.com/nvaccess/nvda/tree/master
-* NVDA Dynamic Testing Webpage - https://github.com/mlorang/nvda-dynamic-testing-webpage
-* NVDA Dynamic Testing Framework - https://github.com/mlorang/nvda-dynamic-testing-framework
+* NVDA Dynamic Testing Webpage - https://github.com/UD-CISC-375/nvda-dynamic-testing-webpage
+* NVDA Dynamic Testing Framework - https://github.com/UD-CISC-375/nvda-dynamic-testing-framework
