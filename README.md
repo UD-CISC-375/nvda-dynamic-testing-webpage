@@ -1,6 +1,6 @@
 # NVDA dynamic testing webpage
 
-A set of dynamic UI components for testing screen-reader and accessibility tooling. The tests live in other repositories, such as [nvda-dynamic-testing-framework](https://github.com/mlorang/nvda-dynamic-testing-framework) and Playwright + axe-core suites. This repo only hosts the page they test against.
+A set of dynamic UI components for testing screen-reader and accessibility tooling. The tests live in other repositories, such as [nvda-dynamic-testing-framework](https://github.com/UD-CISC-375/nvda-dynamic-testing-framework) and Playwright + axe-core suites. This repo only hosts the page they test against.
 
 Every scenario has two variants:
 
