@@ -4,6 +4,8 @@ import { useScenarioParams } from '../hooks/useScenarioParams';
 import { CATEGORY_TITLES } from '../scenarios/registry.data';
 import { Scenario } from '../scenarios/registry';
 import { SiteHeader } from './SiteHeader';
+import { WcagCriteria } from './WcagCriteria';
+import { WCAG_URL } from '../scenarios/wcag';
 
 export function ScenarioLayout({ scenario }: { scenario: Scenario }) {
   const { variant, delay } = useScenarioParams(scenario.defaultDelay);
@@ -30,6 +32,12 @@ export function ScenarioLayout({ scenario }: { scenario: Scenario }) {
         <p className="eyebrow">{CATEGORY_TITLES[scenario.category]}</p>
         <h1>{scenario.title}</h1>
         <p>{scenario.description}</p>
+        <WcagCriteria criteria={scenario.wcag} testid="wcag-criteria" />
+        <p>
+          <a href={WCAG_URL} data-testid="wcag-link">
+            Read the full WCAG 2.2 standard
+          </a>
+        </p>
         <div className={`variant-bar variant-${variant}`} data-testid="variant-bar">
           <p>
             Variant: <strong data-testid="variant">{variant}</strong>

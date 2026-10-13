@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SiteHeader } from '../components/SiteHeader';
+import { WcagCriteria } from '../components/WcagCriteria';
 import { REGISTRY } from '../scenarios/registry';
 import { CATEGORY_TITLES, Category, VARIANTS } from '../scenarios/registry.data';
+import { WCAG_URL } from '../scenarios/wcag';
 
 const CATEGORIES = Object.keys(CATEGORY_TITLES) as Category[];
 
@@ -21,6 +23,13 @@ export function Index() {
           Add <code>?delay=0</code> to make async updates immediate. A machine-readable list is at{' '}
           <a href="scenarios.json">scenarios.json</a>.
         </p>
+        <p>
+          Each scenario lists the success criteria it tests from the{' '}
+          <a href={WCAG_URL} data-testid="wcag-link">
+            WCAG 2.2 standard
+          </a>
+          .
+        </p>
         {CATEGORIES.map((category) => (
           <section key={category} aria-labelledby={`cat-${category}`}>
             <h2 id={`cat-${category}`}>{CATEGORY_TITLES[category]}</h2>
@@ -28,6 +37,7 @@ export function Index() {
               {REGISTRY.filter((s) => s.category === category).map((s) => (
                 <li key={s.id} data-testid={`scenario-${s.id}`}>
                   <h3>{s.title}</h3>
+                  <WcagCriteria criteria={s.wcag} testid={`wcag-${s.id}`} />
                   <p>{s.description}</p>
                   <p className="row">
                     {VARIANTS.map((variant) => (
