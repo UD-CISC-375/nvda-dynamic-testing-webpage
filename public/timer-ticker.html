@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer Ticker - Dynamic A11y Test Suite</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    .header-nav {
+      margin-bottom: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .page-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Variant Switcher Card */
+    .variant-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .variant-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .variant-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .variant-toggle {
+      display: flex;
+      background-color: var(--bg-main);
+      border-radius: 0.5rem;
+      padding: 0.25rem;
+      border: 1px solid var(--border-color);
+    }
+    .btn-toggle {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-toggle.active-accessible {
+      background-color: #065f46;
+      color: #a7f3d0;
+    }
+    .btn-toggle.active-broken {
+      background-color: #991b1b;
+      color: #fecaca;
+    }
+
+    /* Interactive Component Display */
+    .component-box {
+      background-color: var(--bg-main);
+      border: 2px dashed var(--border-color);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .ticker-display {
+      font-family: var(--font-mono);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.05em;
+      margin: 1rem 0;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background-color: var(--primary); color: #0f172a; }
+    .btn-danger { background-color: var(--danger); color: #0f172a; }
+    .btn-secondary { background-color: var(--bg-card-hover); color: var(--text-main); }
+
+    /* Fake Div Button for Broken Mode */
+    .fake-btn {
+      display: inline-block;
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background-color: var(--bg-card-hover);
+      color: var(--text-muted);
+      cursor: default; /* Non-semantic div without tabindex */
+    }
+
+    /* Console & Inspector Panel */
+    .inspector-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .inspector-panel { grid-template-columns: 1fr; }
+    }
+    .panel-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    .panel-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .log-box {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background-color: var(--bg-main);
+      padding: 0.75rem;
+      border-radius: 0.25rem;
+      height: 140px;
+      overflow-y: auto;
+      color: var(--success);
+      border: 1px solid var(--border-color);
+    }
+    .attr-table {
+      width: 100%;
+      font-size: 0.85rem;
+      border-collapse: collapse;
+    }
+    .attr-table td {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .attr-name { color: var(--text-muted); font-family: var(--font-mono); }
+    .attr-val { text-align: right; font-family: var(--font-mono); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Navigation Header -->
+    <header class="header-nav">
+      <span class="badge">Live regions & alerts</span>
+      <h1 class="page-title">Timer Ticker (Rapid DOM Mutation)</h1>
+      <p class="page-desc">Accessibility verification suite for real-time counters with rapid DOM updates and screen reader behavior.</p>
+    </header>
+
+    <!-- Variant Selector Card -->
+    <section class="variant-card">
+      <div class="variant-header">
+        <span class="variant-title" id="current-variant-label">Current Mode: Accessible</span>
+        <div class="variant-toggle" role="radiogroup" aria-label="Variant Mode Switcher">
+          <button id="mode-accessible" class="btn-toggle active-accessible" onclick="switchVariant('accessible')">
+            Accessible
+          </button>
+          <button id="mode-broken" class="btn-toggle" onclick="switchVariant('broken')">
+            Broken
+          </button>
+        </div>
+      </div>
+
+      <!-- Component Mount Area -->
+      <div class="component-box">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Real-time Dynamic Elapsed Timer</p>
+        
+        <!-- DYNAMIC TARGET CONTAINER -->
+        <div id="ticker-container">
+          <!-- Dynamically populated by JS based on selected variant -->
+        </div>
+
+        <div id="controls-container" class="controls">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- Real-time Inspector Panels -->
+      <div class="inspector-panel">
+        <div class="panel-box">
+          <div class="panel-title">DOM Attributes Inspector</div>
+          <table class="attr-table">
+            <tr>
+              <td class="attr-name">role</td>
+              <td class="attr-val" id="inspect-role">timer</td>
+            </tr>
+            <tr>
+              <td class="attr-name">aria-live</td>
+              <td class="attr-val" id="inspect-live">polite</td>
+            </tr>
+            <tr>
+              <td class="attr-name">aria-atomic</td>
+              <td class="attr-val" id="inspect-atomic">true</td>
+            </tr>
+            <tr>
+              <td class="attr-name">Tag Element</td>
+              <td class="attr-val" id="inspect-tag">&lt;output&gt;</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="panel-box">
+          <div class="panel-title">MutationObserver Log</div>
+          <div id="mutation-log" class="log-box">
+            [Ready] Observer initialized...
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let timerId = null;
+    let seconds = 0;
+    let currentVariant = 'accessible';
+
+    function initVariantFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const variantParam = params.get('variant');
+      if (variantParam === 'broken') {
+        switchVariant('broken', false);
+      } else {
+        switchVariant('accessible', false);
+      }
+    }
+
+    function switchVariant(variant, updateUrl = true) {
+      currentVariant = variant;
+      stopTimer();
+      seconds = 0;
+
+      if (updateUrl) {
+        const newUrl = `${window.location.pathname}?variant=${variant}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      }
+
+      const container = document.getElementById('ticker-container');
+      const controls = document.getElementById('controls-container');
+      const label = document.getElementById('current-variant-label');
+      const btnAccessible = document.getElementById('mode-accessible');
+      const btnBroken = document.getElementById('mode-broken');
+
+      if (variant === 'accessible') {
+        label.textContent = "Current Mode: Accessible (WAI-ARIA Compliant)";
+        btnAccessible.className = "btn-toggle active-accessible";
+        btnBroken.className = "btn-toggle";
+
+        container.innerHTML = `
+          <output id="timer-display" 
+                  class="ticker-display" 
+                  role="timer" 
+                  aria-live="polite" 
+                  aria-atomic="true" 
+                  aria-label="Elapsed Time Counter">
+            00:00
+          </output>
+        `;
+
+        controls.innerHTML = `
+          <button class="btn btn-primary" onclick="startTimer()">Start Timer</button>
+          <button class="btn btn-danger" onclick="stopTimer()">Stop</button>
+          <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+        `;
+
+        updateInspector('timer', 'polite', 'true', '<output>');
+
+      } else {
+        label.textContent = "Current Mode: Broken (Accessibility Non-compliant)";
+        btnAccessible.className = "btn-toggle";
+        btnBroken.className = "btn-toggle active-broken";
+
+        container.innerHTML = `
+          <div id="timer-display" class="ticker-display">
+            00:00
+          </div>
+        `;
+
+        controls.innerHTML = `
+          <div class="fake-btn" onclick="startTimer()">Start (Div)</div>
+          <button class="btn btn-secondary" onclick="stopTimer()"></button> <!-- Missing button name -->
+          <div class="fake-btn" onclick="resetTimer()">Reset (Div)</div>
+        `;
+
+        updateInspector('none', 'none', 'none', '<div>');
+      }
+
+      setupMutationObserver();
+    }
+
+    function updateInspector(role, live, atomic, tag) {
+      document.getElementById('inspect-role').textContent = role;
+      document.getElementById('inspect-live').textContent = live;
+      document.getElementById('inspect-atomic').textContent = atomic;
+      document.getElementById('inspect-tag').textContent = tag;
+    }
+
+    function formatTime(s) {
+      const mins = Math.floor(s / 60).toString().padStart(2, '0');
+      const secs = (s % 60).toString().padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    function startTimer() {
+      if (timerId) return;
+      timerId = setInterval(() => {
+        seconds++;
+        const display = document.getElementById('timer-display');
+        if (display) {
+          display.textContent = formatTime(seconds);
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function resetTimer() {
+      stopTimer();
+      seconds = 0;
+      const display = document.getElementById('timer-display');
+      if (display) {
+        display.textContent = formatTime(seconds);
+      }
+    }
+
+    let observer = null;
+    function setupMutationObserver() {
+      if (observer) observer.disconnect();
+      const target = document.getElementById('ticker-container');
+      const logBox = document.getElementById('mutation-log');
+
+      observer = new MutationObserver((mutations) => {
+        mutations.forEach((m) => {
+          const time = new Date().toLocaleTimeString();
+          const logMsg = `[${time}] Mutation: ${m.type} -> "${m.target.textContent.trim()}"`;
+          logBox.innerHTML = `<div>${logMsg}</div>` + logBox.innerHTML;
+        });
+      });
+
+      observer.observe(target, { childList: true, characterData: true, subtree: true });
+    }
+
+    window.addEventListener('DOMContentLoaded', initVariantFromUrl);
+  </script>
+</body>
+</html>
