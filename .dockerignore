@@ -1,0 +1,4 @@
+# Not copied into the Docker build (see Dockerfile).
+.git
+node_modules
+build
