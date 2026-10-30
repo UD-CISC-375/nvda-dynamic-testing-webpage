@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import App from './App';
+import { ACCORDION_PAGE } from './pages/Index';
 import { SCENARIOS } from './scenarios/registry.data';
 import { WCAG_CRITERIA, WCAG_URL } from './scenarios/wcag';
 
@@ -15,6 +16,15 @@ test('index links to both variants of every scenario', () => {
     expect(screen.getByTestId(`link-${s.id}-accessible`)).toHaveAttribute('href', `#${s.path}?variant=accessible`);
     expect(screen.getByTestId(`link-${s.id}-broken`)).toHaveAttribute('href', `#${s.path}?variant=broken`);
   }
+});
+
+test('index links to the isolated accordion page', () => {
+  render(<App />);
+  expect(screen.getByTestId('link-accordion-isolated')).toHaveAttribute(
+    'href',
+    ACCORDION_PAGE,
+  );
+  expect(ACCORDION_PAGE).toMatch(/\/accordion\.html$/);
 });
 
 test('scenario pages link back to the index', () => {

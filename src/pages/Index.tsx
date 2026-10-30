@@ -7,6 +7,8 @@ import { CATEGORY_TITLES, Category, VARIANTS } from '../scenarios/registry.data'
 import { WCAG_URL } from '../scenarios/wcag';
 
 const CATEGORIES = Object.keys(CATEGORY_TITLES) as Category[];
+const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
+export const ACCORDION_PAGE = `${publicUrl}/accordion.html`;
 
 export function Index() {
   useEffect(() => {
@@ -56,6 +58,23 @@ export function Index() {
             </ul>
           </section>
         ))}
+        <section aria-labelledby="isolated-pages">
+          <h2 id="isolated-pages">Isolated test pages</h2>
+          <ul className="scenario-list">
+            <li data-testid="isolated-accordion">
+              <h3>Accordion</h3>
+              <p>
+                Standalone HTML page with a broken accordion. Headers toggle
+                panels visually but omit ARIA expanded state and controls.
+              </p>
+              <p className="row">
+                <a href={ACCORDION_PAGE} data-testid="link-accordion-isolated">
+                  Open isolated page
+                </a>
+              </p>
+            </li>
+          </ul>
+        </section>
       </main>
     </>
   );
