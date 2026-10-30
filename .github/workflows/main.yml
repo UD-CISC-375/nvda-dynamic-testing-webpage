@@ -26,6 +26,10 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Check scenarios.json is up to date
+      run: |
+        npm run manifest
+        git diff --exit-code public/scenarios.json
       - run: npm run build
         env:
           CI: false   # stops CRA from failing the build on lint warnings
