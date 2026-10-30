@@ -1,7 +1,7 @@
 {
   "name": "nvda_dynamic_testing_webpage",
   "version": "0.1.0",
-  "homepage": "https://mlorang.github.io/nvda-dynamic-testing-webpage",
+  "homepage": "https://ud-cisc-375.github.io/nvda-dynamic-testing-webpage",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.2",
