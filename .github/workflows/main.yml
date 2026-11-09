@@ -26,7 +26,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Check scenarios.json is up to date
+      - name: Check scenarios.json is up to date    #change version number to check
       run: |
         npm run manifest
         git diff --exit-code public/scenarios.json
