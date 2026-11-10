@@ -41,6 +41,52 @@ Every scenario page also has the following:
 - **`axe.brokenRules`**: axe-core rule ids the broken variant must violate after setup.
 - **`axe.nvdaOnly`**: `true` when the flaw is invisible to axe, such as a missing live region or missing focus management. Only a screen-reader test can catch these.
 
+### ScenarioMeta fields
+
+Each scenario in `scenarios.json` contains the following fields, defined by `ScenarioMeta` in `src/scenarios/registry.data.ts`:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `id` | `string` | Unique identifier for the scenario. |
+| `path` | `string` | Route path for the scenario. |
+| `title` | `string` | Name of the scenario. |
+| `wcag` | `string[]` | WCAG 2.2 criteria the scenario tests. |
+| `category` | `Category` | Category the scenario belongs to. |
+| `description` | `string` | Description of the scenario. |
+| `flaw` | `string` | Accessibility problem in the broken variant. |
+| `defaultDelay` | `number` | Default delay in milliseconds for asynchronous updates. |
+| `setup` | `SetupStep[]` | Steps to prepare the scenario before testing. |
+| `expected` | `object` | Expected screen-reader announcements for each variant. |
+| `axe` | `object` | Expected axe-core results and testing information. |
+
+The nested fields are:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `expected.accessible` | `string[]` | Expected announcements for the accessible variant. |
+| `expected.broken` | `string[]` | Expected announcements for the broken variant. |
+| `axe.brokenRules` | `string[]` | axe-core rules the broken variant should violate. |
+| `axe.nvdaOnly` | `boolean` | Whether the flaw requires screen-reader testing. |
+| `axe.note` | `string` (optional) | Additional notes about axe-core results. |
+| `setup[].action` | `string` | Action to perform: `click`, `fill`, `press`, or `waitFor`. |
+| `setup[].testid` | `string` | Target element's `data-testid`. |
+| `setup[].value` | `string` (optional) | Value for a `fill` or `press` action. |
+
+The manifest generator also adds `urls.accessible` and `urls.broken` for each scenario. These are strings containing relative hash URLs.
+
+### Versioning rules
+
+The `version` field identifies the manifest format version.
+
+- Renaming a field requires incrementing `version`.
+- Removing a field requires incrementing `version`.
+- Changing a field's meaning requires incrementing `version`.
+- Adding a new field does not require incrementing `version`.
+
+These rules protect external testing frameworks from breaking changes to the manifest structure.
+
+When the registry changes, run `npm run manifest` and commit the updated `public/scenarios.json`.
+
 The manifest is generated from [src/scenarios/registry.data.ts](src/scenarios/registry.data.ts) by `npm run manifest`. It runs automatically before `start` and `build`.
 
 **Suggested axe usage in a Playwright repo:**
