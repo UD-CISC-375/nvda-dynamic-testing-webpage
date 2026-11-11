@@ -38,8 +38,9 @@ test('renders a title and accordion header buttons', () => {
   );
 });
 
-test('links back to the landing site', () => {
-  expect(screen.getByTestId('back-to-index')).toHaveAttribute('href', './#/');
+test('does not link back to the landing site', () => {
+  expect(screen.queryByTestId('back-to-index')).not.toBeInTheDocument();
+  expect(screen.queryByText(/back to all scenarios/i)).not.toBeInTheDocument();
 });
 
 test('does not include an accessible variant switcher', () => {
