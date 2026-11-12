@@ -122,7 +122,7 @@ export const SCENARIOS: ScenarioMeta[] = [
       note: 'Audit while the spinner is visible; use a large ?delay= to hold that state.',
     },
   },
-
+  
   // ---- Disclosure widgets ----
   {
     id: 'disclosure-accordion',
@@ -297,7 +297,24 @@ export const SCENARIOS: ScenarioMeta[] = [
     expected: { accessible: ['3 recommendations loaded'], broken: [] },
     axe: { brokenRules: [], nvdaOnly: true },
   },
+  {
+    id: 'dynamic-timer-ticker',
+    path: '/dynamic/timer-ticker',
+    title: 'Timer ticker',
+    wcag: ['4.1.3', '4.1.2'],
+    category: 'dynamic',
+    description: 'A real-time elapsed timer updates periodically with start, stop, and reset controls.',
+    flaw: 'The timer is a plain div with no timer role or live region, and controls are non-semantic divs or an unlabeled button.',
+    defaultDelay: 1000,
+    setup: [{ action: 'click', testid: 'trigger' }],
+    expected: { accessible: ['00:01'], broken: [] },
+    axe: {
+      brokenRules: ['button-name'],
+      nvdaOnly: false,
+    },
+  },
 ];
+
 
 export function scenarioHref(s: ScenarioMeta, variant: Variant): string {
   return `#${s.path}?variant=${variant}`;
