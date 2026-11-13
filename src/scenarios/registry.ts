@@ -16,6 +16,7 @@ import * as Combobox from './dynamic/Combobox';
 import * as LoadMore from './dynamic/LoadMore';
 import * as SortableTable from './dynamic/SortableTable';
 import * as DelayedContent from './dynamic/DelayedContent';
+import * as TimerTicker from './dynamic/TimerTicker';
 
 const COMPONENTS: Record<string, ScenarioVariants> = {
   'live-polite': PoliteStatus,
@@ -34,6 +35,7 @@ const COMPONENTS: Record<string, ScenarioVariants> = {
   'dynamic-load-more': LoadMore,
   'dynamic-sort-table': SortableTable,
   'dynamic-inject': DelayedContent,
+  'dynamic-timer-ticker': TimerTicker,
 };
 
 export type Scenario = ScenarioMeta & ScenarioVariants;

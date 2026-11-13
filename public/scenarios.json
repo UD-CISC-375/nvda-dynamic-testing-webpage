@@ -592,6 +592,41 @@
         "accessible": "#/dynamic/delayed-content?variant=accessible",
         "broken": "#/dynamic/delayed-content?variant=broken"
       }
+    },
+    {
+      "id": "dynamic-timer-ticker",
+      "path": "/dynamic/timer-ticker",
+      "title": "Timer ticker",
+      "wcag": [
+        "4.1.3",
+        "4.1.2"
+      ],
+      "category": "dynamic",
+      "description": "A real-time elapsed timer updates periodically with start, stop, and reset controls.",
+      "flaw": "The timer is a plain div with no timer role or live region, and controls are non-semantic divs or an unlabeled button.",
+      "defaultDelay": 1000,
+      "setup": [
+        {
+          "action": "click",
+          "testid": "trigger"
+        }
+      ],
+      "expected": {
+        "accessible": [
+          "00:01"
+        ],
+        "broken": []
+      },
+      "axe": {
+        "brokenRules": [
+          "button-name"
+        ],
+        "nvdaOnly": false
+      },
+      "urls": {
+        "accessible": "#/dynamic/timer-ticker?variant=accessible",
+        "broken": "#/dynamic/timer-ticker?variant=broken"
+      }
     }
   ]
 }
