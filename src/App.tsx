@@ -2,6 +2,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { ScenarioLayout } from './components/ScenarioLayout';
 import { Index, NotFound } from './pages/Index';
+import { Compare } from './pages/Compare';
 import { REGISTRY } from './scenarios/registry';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         {REGISTRY.map((s) => (
           <Route key={s.id} path={s.path} element={<ScenarioLayout scenario={s} />} />
         ))}
+        <Route path="/compare" element={<Compare />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </HashRouter>
