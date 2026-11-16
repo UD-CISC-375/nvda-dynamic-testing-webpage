@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SiteHeader } from '../components/SiteHeader';
 import { REGISTRY, Scenario } from '../scenarios/registry';
-import { CATEGORY_TITLES, Category, Variant } from '../scenarios/registry.data';
+import { CATEGORY_TITLES, Category, Variant, VARIANTS } from '../scenarios/registry.data';
 
 interface Selection {
   id: string;
@@ -91,15 +91,23 @@ function ComparePanel({
             </optgroup>
           ))}
         </select>
-        <label htmlFor={`compare-variant-${panel}`}>Variant</label>
-        <select
-          id={`compare-variant-${panel}`}
-          value={variant}
-          onChange={(event) => onChange({ id, variant: event.target.value as Variant })}
-        >
-          <option value="accessible">Accessible</option>
-          <option value="broken">Broken</option>
-        </select>
+        <fieldset className="compare-variants">
+          <legend>Variant</legend>
+          <div className="row">
+            {VARIANTS.map((option) => (
+              <label key={option}>
+                <input
+                  type="radio"
+                  name={`compare-variant-${panel}`}
+                  value={option}
+                  checked={variant === option}
+                  onChange={() => onChange({ id, variant: option })}
+                />{' '}
+                {option === 'accessible' ? 'Accessible' : 'Broken'}
+              </label>
+            ))}
+          </div>
+        </fieldset>
       </div>
       <p className="eyebrow">{CATEGORY_TITLES[scenario.category]}</p>
       <h3>{scenario.title}</h3>

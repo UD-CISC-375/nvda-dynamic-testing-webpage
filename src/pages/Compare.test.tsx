@@ -19,6 +19,10 @@ test('compare route renders two labelled panels with all scenarios and no scenar
   for (const name of ['A', 'B']) {
     const panel = screen.getByRole('region', { name: `Panel ${name}` });
     const select = within(panel).getByLabelText('Scenario');
+    const variants = within(within(panel).getByRole('group', { name: 'Variant' }));
+    expect(variants.getAllByRole('radio')).toHaveLength(2);
+    expect(variants.getByRole('radio', { name: 'Accessible' })).toBeChecked();
+    expect(variants.getByRole('radio', { name: 'Broken' })).not.toBeChecked();
     expect(within(select).getAllByRole('option')).toHaveLength(REGISTRY.length);
     for (const scenario of REGISTRY) {
       expect(within(select).getByRole('option', { name: scenario.title })).toHaveValue(scenario.id);
@@ -37,7 +41,9 @@ test('selections update metadata and title while preserving the other panel', ()
   for (const scenario of REGISTRY) {
     fireEvent.change(a.getByLabelText('Scenario'), { target: { value: scenario.id } });
     for (const variant of ['accessible', 'broken']) {
-      fireEvent.change(a.getByLabelText('Variant'), { target: { value: variant } });
+      fireEvent.click(a.getByRole('radio', { name: variant === 'accessible' ? 'Accessible' : 'Broken' }));
+      expect(a.getByRole('radio', { name: 'Broken' })).toHaveProperty('checked', variant === 'broken');
+      expect(b.getByRole('radio', { name: 'Accessible' })).toBeChecked();
       expect(screen.getByTestId('compare-panel-a')).toHaveAttribute('data-scenario', scenario.id);
       expect(screen.getByTestId('compare-panel-a')).toHaveAttribute('data-variant', variant);
       expect(document.title).toBe(`Compare: ${scenario.title} (${variant}) vs Auto-dismissing toast (accessible) - NVDA test page`);
@@ -94,10 +100,10 @@ test('changing a scenario or variant remounts its widget', () => {
   render(<App />);
   const a = within(screen.getByTestId('compare-panel-a'));
   fireEvent.click(a.getByRole('tab', { name: 'Security' }));
-  fireEvent.change(a.getByLabelText('Variant'), { target: { value: 'broken' } });
+  fireEvent.click(a.getByRole('radio', { name: 'Broken' }));
   expect(a.getByTestId('tab-profile')).toHaveAttribute('data-active', 'true');
   fireEvent.click(a.getByTestId('tab-billing'));
-  fireEvent.change(a.getByLabelText('Variant'), { target: { value: 'accessible' } });
+  fireEvent.click(a.getByRole('radio', { name: 'Accessible' }));
   expect(a.getByRole('tab', { name: 'Profile' })).toHaveAttribute('aria-selected', 'true');
   fireEvent.change(a.getByLabelText('Scenario'), { target: { value: 'live-toast' } });
   fireEvent.change(a.getByRole('textbox'), { target: { value: 'Discard this draft' } });
