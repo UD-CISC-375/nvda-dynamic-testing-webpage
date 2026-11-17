@@ -30,6 +30,11 @@ export function Index() {
           </a>
           .
         </p>
+        <p>
+          <Link to="/compare" className="btn">
+            Compare two scenarios
+          </Link>
+        </p>
         {CATEGORIES.map((category) => (
           <section key={category} aria-labelledby={`cat-${category}`}>
             <h2 id={`cat-${category}`}>{CATEGORY_TITLES[category]}</h2>
